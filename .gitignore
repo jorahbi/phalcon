@@ -1,0 +1,4 @@
+vendor
+cache/
+.phalcon
+sftp-config.json

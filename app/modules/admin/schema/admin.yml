@@ -1,0 +1,81 @@
+name: admin
+columns:
+  -
+    name: id
+    type: integer
+    comment: 主键
+    option:
+      autoincrement: true
+  -
+    name: nickname
+    type: string
+    comment: 昵称
+    option:
+      notnull: false
+      default: ''
+  -
+    name: email
+    type: string
+    comment: 邮箱 (初始登录方式)
+    option:
+      notnull: true
+  -
+    name: phone
+    type: string
+    comment: 电话号码
+    option:
+      notnull: false
+      default: ''
+  -
+    name: wechat
+    type: string
+    comment: 微信号
+    option:
+      notnull: false
+      default: ''
+  -
+    name: qq
+    type: string
+    comment: qq号
+    option:
+      notnull: false
+      default: ''
+  -
+    name: password
+    type: string
+    comment: 密码
+    option:
+      notnull: true
+  -
+    name: permission
+    type: text
+    comment: 权限列表
+    option:
+      default: ''
+  -
+    name: role
+    type: integer
+    comment: 所属角色
+    option:
+      default: 0
+
+indexes:
+  -
+    unique: true
+    comment: 邮箱号
+    columns:
+      - email
+  -
+    unique: true
+    comment: 手机号
+    columns:
+      - phone
+  -
+    unique: true
+    comment: 微信号
+    columns:
+      - wechat
+pk:
+  - id
+comment: |
+  ## 管理员用户表

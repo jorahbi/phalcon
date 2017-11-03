@@ -65,9 +65,8 @@ class CommandHelper
 		]);
 
 		$loader->registerNamespaces([
-			'Common\\Config' => APP_PATH . '/common/config',
-			'Core\\Bin\\Helper' => APP_PATH . '/core/bin/helper',
-			'Core\\Bin\\Commands' => APP_PATH . '/core/bin/commands'
+			'Common\\Bin\\Helper' => APP_PATH . '/common/bin/helper',
+			'Common\\Bin\\Commands' => APP_PATH . '/common/bin/commands'
 		]);
 		$loader->register();
 	}
@@ -75,7 +74,7 @@ class CommandHelper
 	protected static function addCommands()
 	{
 		self::$app->addCommands([
-			new \Core\Bin\Commands\SchemaCommand()
+			new \Common\Bin\Commands\SchemaCommand()
 		]);
 	}	
 }

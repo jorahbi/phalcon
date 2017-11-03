@@ -20,27 +20,55 @@ return [
         'appDir'         => APP_PATH . '/',
         'migrationsDir'  => APP_PATH . '/migrations/',
         'cacheDir'       => BASE_PATH . '/cache/',
-        
-
-        // This allows the baseUri to be understand project paths that are not in the root directory
-        // of the webpspace.  This will break if the public/index.php entry point is moved or
-        // possibly if the web server rewrite rules are changed. This can also be set to a static path.
         'baseUri'        => '/',
         'defaultModule' => 'frontend',
         'defaultNamespace' => 'Frontend\\Controllers',
         'defaultController' => 'index',
         'defaultAction' => 'index',
-        'modulePath' => APP_PATH . '/modules/'
     ],
     'cache' => [
-        'lefttime' => 172800,
-        'modelDir' => BASE_PATH . '/cache/model/',
+        'redis' => [
+            'host'       => '127.0.0.1',
+            'port'       => 6379,
+            'auth'       => '',
+            'persistent' => false,
+            'index'      => 0,
+        ],
+        'model' => [
+            'path' => BASE_PATH . '/cache/model/',
+            'lefttime' => 172800
+        ]
     ],
     //第三方
     'thirdParty' => [
         'wechatPath' => APP_PATH . '/common/config/wechat.php'
     ],
 
+    //语言包
+    'language' => [
+        'zh_CN' => APP_PATH . '/common/config/language/zh_CN.php',
+    ],
+
+    ///加密
+    'crypt' => [
+        //@link http://www.iphalcon.cn/reference/crypt.html
+        'key' => '%31.1e$i86e$f!8jz',
+        'cipher' => 'aes-256-cfb'
+    ],
+    //cookie
+    'cookies' => [
+        'expire' => 86400,
+        'encrypt' => true
+    ],
+    //session 会话
+    'session' => [
+        'adapter' => '\\Phalcon\\Session\\Adapter\\Files',
+        'expire' => 3600,
+        //construct params
+        'options' => [
+            'uniqueId'   => 'ebizsoft',
+        ]
+    ],
     /**
      * if true, then we print a new line at the end of each CLI execution
      *

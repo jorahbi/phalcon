@@ -27,8 +27,7 @@ class Module implements ModuleDefinitionInterface
             'Admin\\Controllers' => __DIR__ . '/controllers/',
             'Admin\\Entity' => __DIR__ . '/entity/',
             'Admin\\Models'      => __DIR__ . '/models/',
-            'Admin\\Plugins'      => __DIR__ . '/plugins/',
-            'Admin\\Config' => __DIR__ . '/config/'
+            'Admin\\Plugins'      => __DIR__ . '/plugins/'
         ]);
 
         $loader->register();

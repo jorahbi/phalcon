@@ -1,12 +1,12 @@
 <?php
 
-namespace Core\Bin\Commands;
+namespace Common\Bin\Commands;
 
 use Doctrine\Common\Inflector\Inflector;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
-use Core\Bin\Helper\SchemaHelper;
+use Common\Bin\Helper\SchemaHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -53,13 +53,13 @@ class SchemaCommand extends Command
     	}
     	$action = lcfirst($action);
 
-    	if(!method_exists('\\Core\\Bin\\Helper\\SchemaActionHelper', $action))
+    	if(!method_exists('\\Common\\Bin\\Helper\\SchemaActionHelper', $action))
     	{
     		throw new \Exception('unimplemented');
     	}
 
-    	\Core\Bin\Helper\SchemaActionHelper::init($input);
-    	$sqls = call_user_func_array('\\Core\\Bin\\Helper\\SchemaActionHelper::' . $action, [$input]);
+    	\Common\Bin\Helper\SchemaActionHelper::init($input);
+    	$sqls = call_user_func_array('\\Common\\Bin\\Helper\\SchemaActionHelper::' . $action, [$input]);
 
     	if (!$input->getOption(self::OPTION_EXEC)) 
     	{

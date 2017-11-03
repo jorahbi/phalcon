@@ -71,6 +71,7 @@ class Request
     public function run($debug = false) 
     {
     	//未通过消息真假性验证
+        
        if ($this->isValid() && $this->validateSignature()) 
         {
             return $_GET['echostr'];

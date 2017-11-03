@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\Bin\Helper;
+namespace Common\Bin\Helper;
 
 use Doctrine\DBAL\Schema\Schema;
-use Core\Bin\Commands\SchemaCommand;
+use Common\Bin\Commands\SchemaCommand;
 use Doctrine\DBAL\Schema\Comparator;
 use Symfony\Component\Console\Input\InputInterface;
 

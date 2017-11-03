@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Common;
 
 use Phalcon\Mvc\Router;
 use Phalcon\Di\FactoryDefault;
@@ -10,35 +10,45 @@ class Routers
 {
 	private static $routerGroup = [];
 
-	public static function initialize(Router $diRouter)
+	public static function initialize()
 	{
-		self::ordinary($diRouter);
-		self::special($diRouter);
-		/*$diRouter->notFound([
-	        "controller" => "index",
-	        "action"     => "route404",
-		]);*/
+		$router = Service::getContainer()->getRouter();
+		$config = Service::getContainer()->getConfig()->application;
+		self::ordinary($router);
+		self::special($router);
+		$router->add('/', [
+			'module' => $config->defaultModule,
+    		'namespace' => $config->defaultNamespace,
+    		'controller' => $config->defaultController,
+    		'action' => $config->defaultAction
+		]);
+		$router->notFound([
+			'module' => 'frontend',
+    		'namespace' => 'Frontend\\Controllers',
+	        'controller' => 'index',
+	        'action'     => 'route404',
+		]);
 	}
 
 	/**
 	 * 特殊的路由配置
 	 */
-	public static function special(Router $diRouter)
+	public static function special(Router $router)
 	{
 		/*self::$routerGroup['/admin']->add('/test/{id}', [
 			'controller' => 'index',
 			'action' => 'params',
 		]);*/
-		//$diRouter->mount(self::$routerGroup['/admin']);
+		//$router->mount(self::$routerGroup['/admin']);
 	}
 
 	/**
 	 * 路由普通
 	 */
-	public static function ordinary(Router $diRouter)
+	public static function ordinary(Router $router)
 	{
 		self::$routerGroup = [
-			'/' => new RouterGroup([
+			'' => new RouterGroup([
 		        'module' => 'frontend',
     			'namespace' => 'Frontend\\Controllers',
 			]),
@@ -47,8 +57,8 @@ class Routers
 		        'namespace' => 'Admin\\Controllers',
 			]),
 			'/passport' => new RouterGroup([
-		        'module' => 'admin',
-		        'namespace' => 'Admin\\Controllers',
+		        'module' => 'passport',
+		        'namespace' => 'Passport\\Controllers',
 			]),
 		];
 
@@ -64,7 +74,7 @@ class Routers
 		        'action' => 2,
 		        'params' => 3
 			]);
-			$diRouter->mount($value);
+			$router->mount($value);
 		}
 	}
 }

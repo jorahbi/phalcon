@@ -7,21 +7,43 @@ class IndexController extends \Phalcon\Mvc\Controller
 
     public function indexAction()
     {
-        $wechatRequest = new \Service\Wechat\Message\Request();
-        return $wechatRequest->run();
+
+        //header("Access-Control-Allow-Origin: http://passport.com");
+        //$this->session->setId(md5(urldecode($_GET['token'])));
+        if($this->request->isGet() && $this->request->get('token'))
+        {
+
+        }
+        if(isset($_GET['token']))
+            setcookie('token', $_GET['token'], time() + 24 * 60 * 60);
+        $this->session->set('index11', $_GET['token']);
+        //file_put_contents('test', date('Y-m-d H:i:s', time()));
+        //$this->session->destroy(true);
+        //echo  'returnjs({"code":"aa", "ccc": "ddd", "sessionId": "' . md5(urldecode($_GET['token'])) . '"})';  die;
     }
 
     public function testAction()
     {
-        //\Service\Wechat\Auth::getCode('snsapi_userinfo');  
+        //$this->session->set('test', 'aaaaaaaa');
+        var_dump($this->cookies->get('token')->getValue());
+        die('index test');
+    }
+
+    /**
+     * 微信请求
+     */
+    public function wechatAction()
+    {
+        $wechatRequest = new \Service\Wechat\Message\Request();
+        return $wechatRequest->run();
+    }
+
+    public function test1Action()
+    {
+        \Service\Wechat\Auth::getCode('snsapi_userinfo');  
         $result = \Service\Wechat\Auth::getAccessTokenAndOpenId($this->request->get('code'));
-    	 file_put_contents('test', 
-            var_export($result, true)
-        ); 
         $userInfo = \Service\Wechat\Auth::getUserInfo($result['access_token'], $result['openid']);
-        file_put_contents('userInfo', 
-            var_export($userInfo, true)
-        ); 
+        
     }
 
     public function menuAction()

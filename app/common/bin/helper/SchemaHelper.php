@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Bin\Helper;
+namespace Common\Bin\Helper;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;

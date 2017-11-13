@@ -7,7 +7,7 @@ use Service\Wechat\Common\Curl;
 use Phalcon\Cache\Frontend\Data;
 use Phalcon\Cache\Backend\File as BackFile;
 use Phalcon\Cache\Frontend\Json;
-use Core\Service;
+use Common\Service;
 
 /**
  * 微信用户授权

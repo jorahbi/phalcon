@@ -2,7 +2,7 @@
 
 namespace Service\Wechat\Message;
 
-use Service\Wechat\Common\Utils;
+use Service\Wechat\Common\Config;
 use Service\Wechat\Message\Response;
 
 /**
@@ -23,12 +23,17 @@ class Request
     private $params;
 
     /**
+     * @var Phalcon\Http\Request
+     */
+    private $request;
+
+    /**
      * 判断此次请求是否为验证请求
      * @return boolean
      */
     private function isValid() 
     {
-        return isset($_GET['echostr']);
+        return !empty($this->request->get('echostr'));
     }
 
     /**
@@ -38,10 +43,10 @@ class Request
      */
     private function validateSignature() 
     {
-        $signature = $_GET['signature'];
-        $timestamp = $_GET['timestamp'];
-        $nonce = $_GET['nonce'];
-        $token = Utils::getConfig()->wechatToken;
+        $signature = $this->request->get('signature');
+        $timestamp = $this->request->get('timestamp');
+        $nonce = $this->request->get('nonce');
+        $token = Config::getConfig()->wechatToken;
         $signatureArray = array($token, $timestamp, $nonce);
         sort($signatureArray, SORT_STRING);
         return sha1(implode($signatureArray)) == $signature;
@@ -68,16 +73,16 @@ class Request
      * 分析消息类型，并分发给对应的函数
      * @return void
      */
-    public function run($debug = false) 
-    {
+    public function run(\Phalcon\Http\Request $request) 
+    { 
+        $this->request = $request;
     	//未通过消息真假性验证
-        
        if ($this->isValid() && $this->validateSignature()) 
         {
-            return $_GET['echostr'];
+            return  $this->request->get('echostr');
         }
         //是否打印错误报告
-        $this->debug = $debug;
+        //$this->debug = $debug;
         //接受并解析微信中心POST发送XML数据
         $xml = (array) simplexml_load_string(file_get_contents('php://input'), 'SimpleXMLElement', LIBXML_NOCDATA);
 
@@ -86,23 +91,4 @@ class Request
 
         return Response::handle($this);
     }
-/*
-    public function checkSignature()
-    {
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
-
-        $token = WECHAT_TOKEN;
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-
-        if( $tmpStr == $signature ){
-            return true;
-        }else{
-            return false;
-        }
-    }*/
 }

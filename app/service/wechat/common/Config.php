@@ -2,7 +2,7 @@
 
 namespace Service\Wechat\Common;
 
-use Core\Service;
+use Common\Service;
 
 class Config
 {

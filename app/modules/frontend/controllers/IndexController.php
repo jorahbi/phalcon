@@ -2,12 +2,28 @@
 
 namespace Frontend\Controllers;
 
+use Endroid\QrCode\QrCode;
+
 class IndexController extends \Phalcon\Mvc\Controller
 {
+    public function qrcodeAction()
+    {
+        $url = 'https://open.weixin.qq.com/connect/qrconnect?appid=wxa4402973fd06422d&redirect_uri=http://testing.ecbig.cn/index/test&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+        $qrCode = new QrCode($url);
+        header('Content-Type: '.$qrCode->getContentType());
+        echo $qrCode->writeString();die;
+    }
+
+
+    public function pngAction()
+    {
+        $image = new \Phalcon\Image\Adapter\Gd("image.jpg");
+        $image->save("rotated-image.jpg");
+    }
+
 
     public function indexAction()
     {
-
         //header("Access-Control-Allow-Origin: http://passport.com");
         //$this->session->setId(md5(urldecode($_GET['token'])));
         if($this->request->isGet() && $this->request->get('token'))
@@ -25,7 +41,7 @@ class IndexController extends \Phalcon\Mvc\Controller
     public function testAction()
     {
         //$this->session->set('test', 'aaaaaaaa');
-        var_dump($this->cookies->get('token')->getValue());
+        file_put_contents('request', var_export($_GET, true));
         die('index test');
     }
 
@@ -34,8 +50,12 @@ class IndexController extends \Phalcon\Mvc\Controller
      */
     public function wechatAction()
     {
+        //file_put_contents('request', $signature);
+        
         $wechatRequest = new \Service\Wechat\Message\Request();
-        return $wechatRequest->run();
+        $result = $wechatRequest->run($this->request);
+        
+        return $result;
     }
 
     public function test1Action()

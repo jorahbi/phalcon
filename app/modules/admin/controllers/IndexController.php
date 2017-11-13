@@ -7,7 +7,7 @@ class IndexController extends \Phalcon\Mvc\Controller
 
     public function indexAction()
     {
-    	
+    	var_dump(class_exists('\Phalcon\Chart\QRcode'));
     }
 
     public function loginAction()

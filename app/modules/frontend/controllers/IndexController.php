@@ -42,7 +42,8 @@ class IndexController extends \Phalcon\Mvc\Controller
     {
         //$this->session->set('test', 'aaaaaaaa');
         file_put_contents('request', var_export($_GET, true));
-        die('index test');
+        echo 'dddddddddddddddddd';
+        print_r('index testasdfsd');
     }
 
     /**

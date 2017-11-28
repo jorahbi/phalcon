@@ -30,13 +30,14 @@ class Service
 	{
 		if(empty(self::$container))
 		{
+			var_dump("121212\n");
 			self::$container = new FactoryDefault();
 			self::initialize();
 		}
 		return self::$container;
 	}
 
-	protected static function initialize()
+	public static function initialize()
 	{
 		/**
 		 * Shared configuration service
@@ -86,7 +87,7 @@ class Service
 		    $volt->setOptions([
 		        'compiledPath' => function($templatePath) use ($config) {
 
-		            $filename = md5($templatePath). '.php';
+		            $filename = md5($templatePath) . '.php';
 		            $cacheDir = $config->application->cacheDir;
 		            if ($cacheDir && substr($cacheDir, 0, 2) == '..') {
 		                $cacheDir = __DIR__ . DIRECTORY_SEPARATOR . $cacheDir;
@@ -135,7 +136,7 @@ class Service
 		/**
 		 * Starts the session the first time some component requests the session service
 		 */
-		self::$container->setShared('session', function () {
+		self::$container->set('session', function () {
 			$sessionConfig = $this->getConfig()->session;
 			//new SessionAdapter()
 			$sessionAdapter = $sessionConfig->adapter;
@@ -144,7 +145,7 @@ class Service
 		    $session->start();
 
 		    return $session;
-		});
+		}, true);
 
 		/**
 		 * cookie

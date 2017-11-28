@@ -8,12 +8,14 @@ class IndexController extends \Phalcon\Mvc\Controller
 {
 	public function indexAction()
 	{
-		die('sasafsdf');
+		
 	}
 
 	public function loginAction()
 	{
-		$this->view->setVars($this->config->sso->toArray());
+		$this->response->setStatusCode(200, 'ok');
+		return $this->response->setJsonContent(['class' => \Common\Service::getContainer('session')]);
+		//$this->view->setVars($this->config->sso->toArray());
 	}
 
 	public function checkLoginAction()

@@ -14,10 +14,15 @@ class Loader
 		 */
 		$namespace = [
 		    'Common' => APP_PATH . '/common',
+		    
 		    'Service\\Wechat\\User' => APP_PATH . '/service/wechat/user',
 		    'Service\\Wechat\\Message' => APP_PATH . '/service/wechat/message',
 		    'Service\\Wechat\\Common' => APP_PATH . '/service/wechat/common',
 		    'Service\\Wechat' => APP_PATH . '/service/wechat',
+
+		    'Service\\Swoole\\Server' => APP_PATH . '/service/swoole/server',
+		    'Service\\Swoole\\Task' => APP_PATH . '/service/swoole/task',
+		    'Service\\Swoole\\Event' => APP_PATH . '/service/swoole/event',
 		];
 
 		$modules = self::getModules();

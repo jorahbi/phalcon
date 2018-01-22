@@ -19,25 +19,24 @@ class SchemaHelper
      * @param String $moduleName
      * @return Doctrine\DBAL\Schema\Schema
      */
-	public static function getSchema($tableName, $moduleName)
-	{
-		$dir = empty($moduleName) ? 
-			\CommandHelper::getService('config')->application->appDir . 'common/schema' :
-			\CommandHelper::getService('config')->application->modulePath . $moduleName . '/schema';
-		print_r($dir);
-		if($tableName)
-		{
-			return self::createTableFromFile($dir . '/' . $tableName . '.yml');
-		}
-		return self::createSchemaFromDir($dir);
-	}
+    public static function getSchema($tableName, $moduleName)
+    {
+        $dir = empty($moduleName) ?
+        \CommandHelper::getService('config')->application->appDir . 'common/schema' :
+        \CommandHelper::getService('config')->application->modulePath . $moduleName . '/schema';
+
+        if ($tableName) {
+            return self::createTableFromFile($dir . '/' . $tableName . '.yml');
+        }
+        return self::createSchemaFromDir($dir);
+    }
 
     /**
      * 获取文件夹下所有需要操作的数据表
      * @param String $dir
      * @return Doctrine\DBAL\Schema\Schema
      */
-	public static function createSchemaFromDir($dir)
+    public static function createSchemaFromDir($dir)
     {
         $schema = new Schema();
 
@@ -96,9 +95,9 @@ class SchemaHelper
         if (isset($r['indexes'])) {
             foreach ($r['indexes'] as $idx) {
                 $name = isset($idx['name']) ?
-                    $idx['name'] :
-                    self::getIndexName($r['name'], $idx['columns']);
-                $flags = isset($idx['flags']) ? $idx['flags'] : [];
+                $idx['name'] :
+                self::getIndexName($r['name'], $idx['columns']);
+                $flags  = isset($idx['flags']) ? $idx['flags'] : [];
                 $option = isset($idx['option']) ? $idx['option'] : [];
 
                 if (isset($idx['comment'])) {
@@ -135,7 +134,7 @@ class SchemaHelper
     public static function getDbalConnection($dbname)
     {
         $connection = DriverManager::getConnection([
-            'pdo' => \CommandHelper::getService('commandDb'),
+            'pdo'    => \CommandHelper::getService('commandDb'),
             'dbname' => $dbname,
         ]);
         /**
@@ -148,7 +147,7 @@ class SchemaHelper
 
     /**
      * 创建索引名称
-     * @param string $tableName 
+     * @param string $tableName
      * @param string $cols
      * @return string
      */

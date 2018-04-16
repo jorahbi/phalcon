@@ -1,8 +1,5 @@
 <?php
 
-//defined('BASE_PATH') or define('BASE_PATH', dirname(__DIR__));
-//defined('APP_PATH') or define('APP_PATH', BASE_PATH . '/app');
-
 return [
     'version' => '1.0',
 
@@ -15,12 +12,6 @@ return [
         'charset' => 'utf8',
     ],
 
-    //加载类
-//    'classes' => [
-//        'Frontend\\Module' => APP_PATH . '/frontend/config/Module.php',
-//        'Admin\\Module' => APP_PATH . '/admin/config/Module.php',
-//        'Order\\Module' => APP_PATH . '/order/config/Module.php',
-//    ],
     //设置模块
     'modules' => [
         'frontend' => [
@@ -31,8 +22,8 @@ return [
             'className' => 'Admin\\Config\\Module',
             'path' => APP_PATH . '/admin/config/Module.php',
         ],
-        'order' => [
-            'className' => 'Order\\Config\\Module',
+        'goods' => [
+            'className' => 'Goods\\Config\\Module',
             'path' => APP_PATH . '/order/config/Module.php',
         ],
     ],

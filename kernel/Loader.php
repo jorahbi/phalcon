@@ -10,7 +10,7 @@ class Loader
     {
         $namespace = [];
 
-        $modules = Service::getInstance()->getService('config')->getConfig()->modules->toArray();
+        $modules = Service::getService('config')->getConfig()->modules->toArray();
         foreach ($modules as $key => $value) {
             $ucfirstKey = ucfirst($key);
             $namespace[$ucfirstKey . '\\Entity'] = APP_PATH . '/' . $key . '/entity';

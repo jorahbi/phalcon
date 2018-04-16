@@ -19,7 +19,7 @@ class SecurityPlugin extends Plugin
 
 	public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher)
     {
-    	$this->config = $this->getDI()->getShared('config');
+    	$this->config = $this->getDI()->get('config')->getConfig();
 
     	$loginController = $this->config->security->loginController;
     	$loginAction = $this->config->security->loginAction;
@@ -63,7 +63,6 @@ class SecurityPlugin extends Plugin
 		        $this->acl->allow("manager", $resourceName, $action);
 		    }
 		}
-		$this->getRole();
 		return $this->acl;
     }
 
@@ -81,7 +80,7 @@ class SecurityPlugin extends Plugin
     		return $cache->get('admin.role.cache');
     	}
     	$permission = \Admin\Models\Permission::find([
-    		'id < :adminId:',
+    		'id = :adminId:',
     		'bind' => ['adminId' => 2],
     		'cache' => ['key' => 'admin-admin-premission.cache']
     	]);
@@ -92,6 +91,7 @@ class SecurityPlugin extends Plugin
     			continue;
     		$roles[$value->controller][] = $value->action;
     	}
+    	$config = $this->getDI()->get('config')->getConfig();
         if (!is_dir($config->application->runtime . $config->cache->cacheDir)) {
             @mkdir($config->application->runtime . $config->cache->cacheDir , 0755, true);
         }

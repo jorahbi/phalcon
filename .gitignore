@@ -3,3 +3,4 @@ cache/
 .phalcon
 sftp-config.json
 .idea
+runtime/

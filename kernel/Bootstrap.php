@@ -10,7 +10,7 @@ class Bootstrap
     public static function run()
     {
         //try {
-            $container = Service::getInstance()->getContainer();
+            $container = Service::getContainer();
 
             Routers::initialize();
             $application = new Application($container);
@@ -18,7 +18,7 @@ class Bootstrap
             /**
              * Register application modules
              */
-            $application->registerModules($container->getService('config')->resolve()->getConfig()->modules->toArray());
+            $application->registerModules(Service::getService('config')->getConfig()->modules->toArray());
 
             //debug
             (new \Phalcon\Debug())->listen();

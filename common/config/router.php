@@ -1,35 +1,35 @@
 <?php
 
 return [
-    'default'  => [
-        'module'     => 'frontend',
-        'namespace'  => 'Frontend\\Controllers',
+    'default' => [
+        'module' => 'frontend',
+        'namespace' => 'Frontend\\Controllers',
         'controller' => 'index',
-        'action'     => 'index',
+        'action' => 'index',
     ],
     'notFound' => [
-        'module'     => 'frontend',
-        'namespace'  => 'Frontend\\Controllers',
+        'module' => 'frontend',
+        'namespace' => 'Frontend\\Controllers',
         'controller' => 'index',
-        'action'     => 'route404',
+        'action' => 'route404',
     ],
-    'group'    => [
-        ''       => [
-            'module'    => 'frontend',
+    'group' => [
+        '' => [
+            'module' => 'frontend',
             'namespace' => 'Frontend\\Controllers',
         ],
         '/admin' => [
-            'module'    => 'admin',
+            'module' => 'admin',
             'namespace' => 'Admin\\Controllers',
         ],
     ],
-    'other'    => [
+    'other' => [
         [
-            'url'       => '',
-            'module'     => '',
+            'url' => '',
+            'module' => '',
             'controller' => '',
-            'action'     => '',
-            'group'      => '',
+            'action' => '',
+            'group' => '',
         ],
     ],
 ];

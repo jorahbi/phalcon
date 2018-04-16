@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin;
+namespace Admin\Config;
 
 use Admin\Plugins\SecurityPlugin;
 use Phalcon\Config;
@@ -43,7 +43,7 @@ class Module implements ModuleDefinitionInterface
          * Try to load local configuration
          */
 
-        $config = $di->getShared('config');
+        $config = $di->get('config')->getConfig();
 
         $override = new \Phalcon\Config\Adapter\Php(__DIR__ . '/config.php');
 
@@ -52,13 +52,11 @@ class Module implements ModuleDefinitionInterface
         } else {
             $config = $override;
         }
-
         /**
          * Setting up the view component
          */
         $di->set('view', function () {
-            $config = $this->getConfig();
-
+            $config = $this->get('config')->getConfig();
             $view = new View();
             $view->setViewsDir(realpath($config->get('application')->viewsDir));
 
@@ -74,7 +72,7 @@ class Module implements ModuleDefinitionInterface
          * Database connection is created based in the parameters defined in the configuration file
          */
         $di->set('db', function () {
-            $config = $this->getConfig();
+            $config = $this->get('config')->getConfig();
 
             $dbConfig = $config->database->toArray();
 

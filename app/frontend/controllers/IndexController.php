@@ -8,7 +8,8 @@ class IndexController extends \Phalcon\Mvc\Controller
 {
     public function indexAction()
     {
-        $this->view->layout = 'layouts/main.volt';
+
+        //$this->view->layout = 'layouts/main.volt';
     }
 
     public function route404Action()

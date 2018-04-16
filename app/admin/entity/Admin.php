@@ -5,7 +5,7 @@ namespace Admin\Entity;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email as EmailValidator;
 
-class Admin extends \Phalcon\Mvc\Model
+class Admin extends EntityBase
 {
 
     /**

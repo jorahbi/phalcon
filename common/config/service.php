@@ -42,7 +42,7 @@ return [
 
         ]
     ],
-    'file' => [
+    'fileCache' => [
         'className' => 'Kernel\\Service\\FileService',
         'arguments' => [
             [
@@ -81,6 +81,49 @@ return [
             ]
 
         ]
+    ],
+    'modelsMetadata' => [
+        'className' => 'Kernel\\Service\\MetaDataService',
+        'arguments' => [
+            [
+                'type' => 'parameter',
+                'value' => null,
+            ]
+
+        ]
+    ],
+    'view' => [
+        'className' => 'Kernel\\Service\\ViewService',
+        'arguments' => [
+            [
+                'type' => 'parameter',
+                'value' => null,
+            ]
+
+        ]
+    ],
+    'router' => [
+        'className' => 'Kernel\\Service\\RouterService',
+        'arguments' => [
+            [
+                'type' => 'parameter',
+                'value' => true,
+            ]
+
+        ]
+    ],
+    'flash' => [
+        'className' => 'Kernel\\Service\\FlashService',
+        'arguments' => [
+            [
+                'type' => 'parameter',
+                'value' => null,
+            ]
+
+        ]
+    ],
+    'dispatcher' => [
+        'className' => 'Kernel\\Service\\DispatcherService',
     ],
 ];
 

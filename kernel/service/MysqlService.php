@@ -3,7 +3,6 @@
 namespace Kernel\Service;
 
 use Phalcon\Config;
-use Kernel\ServiceInterface;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Cache\Frontend\Data;
 

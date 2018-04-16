@@ -13,7 +13,7 @@ class Routers
 
     public static function initialize()
     {
-        $router          = Service::getInstance()->getService('router');
+        $router          = Service::getService('router');
         self::$routerMap = new ConfigPhp(BASE_PATH . '/common/config/router.php');
         foreach (self::$routerMap->group as $key => $value) {
             $routerGroup = new RouterGroup([

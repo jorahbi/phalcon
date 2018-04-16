@@ -2,7 +2,7 @@
 
 namespace Admin\Entity;
 
-class Permission extends \Phalcon\Mvc\Model
+class Permission extends EntityBase
 {
 
     /**

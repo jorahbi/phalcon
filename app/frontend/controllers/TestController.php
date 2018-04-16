@@ -2,7 +2,7 @@
 
 namespace Frontend\Controllers;
 
-use Endroid\QrCode\QrCode;
+//use Endroid\QrCode\QrCode;
 
 class TestController extends \Phalcon\Mvc\Controller
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Frontend;
+namespace Goods\Config;
 
 use Phalcon\DiInterface;
 use Phalcon\Loader;

@@ -10,10 +10,9 @@ class Bootstrap
     public static function run()
     {
         //try {
-            $container = Service::getContainer();
 
-            Routers::initialize();
-            $application = new Application($container);
+            Service::getService('router')->init();
+            $application = new Application(Service::getContainer());
 
             /**
              * Register application modules

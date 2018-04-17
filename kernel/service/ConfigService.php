@@ -15,6 +15,7 @@ class ConfigService implements ServiceInterface
     private static $config;
     private static $wechat;
     private static $language;
+    private static $router;
 
     /**
      * @return ConfigPhp
@@ -41,6 +42,14 @@ class ConfigService implements ServiceInterface
             self::$language = new ConfigPhp($this->getConfig()->language->zh_CN);
         }
         return self::$language;
+    }
+
+    public function getRouter()
+    {
+        if(empty(self::$router)){
+            self::$router = new ConfigPhp(BASE_PATH . '/common/config/router.php');
+        }
+        return self::$router;
     }
 
 }

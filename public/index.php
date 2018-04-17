@@ -4,7 +4,6 @@
 
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
-//define('MODULES_PATH', APP_PATH . '/modules');
 
  $loader = new \Phalcon\Loader();
 
@@ -12,9 +11,7 @@ define('APP_PATH', BASE_PATH . '/app');
  	BASE_PATH . '/kernel/Loader.php',
  	BASE_PATH . '/vendor/autoload.php'
  ]);
- $loader->registerNamespaces([
-     "Common\\Service" => BASE_PATH . '/common/service'
- ]);
+
  $loader->register();
 
  Kernel\Loader::initialize($loader);

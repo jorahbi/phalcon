@@ -106,6 +106,10 @@ return [
         'className' => 'Kernel\\Service\\RouterService',
         'arguments' => [
             [
+                'type' => 'service',
+                'name' => 'config',
+            ],
+            [
                 'type' => 'parameter',
                 'value' => true,
             ]

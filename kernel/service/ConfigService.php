@@ -20,7 +20,7 @@ class ConfigService implements ServiceInterface
     /**
      * @return ConfigPhp
      */
-    public function getConfig()
+    public function getConfig(): ConfigPhp
     {
         if(empty(self::$config)){
             self::$config =  new ConfigPhp(BASE_PATH . '/common/config/config.php');
@@ -28,7 +28,7 @@ class ConfigService implements ServiceInterface
         return self::$config;
     }
 
-    public function getWechat()
+    public function getWechat(): ConfigPhp
     {
         if(empty(self::$wechat)){
             self::$wechat = new ConfigPhp($this->getConfig()->thirdParty->wechatPath);
@@ -36,7 +36,7 @@ class ConfigService implements ServiceInterface
         return self::$wechat;
     }
 
-    public function getLanguage()
+    public function getLanguage(): ConfigPhp
     {
         if(empty(self::$language)){
             self::$language = new ConfigPhp($this->getConfig()->language->zh_CN);
@@ -44,7 +44,7 @@ class ConfigService implements ServiceInterface
         return self::$language;
     }
 
-    public function getRouter()
+    public function getRouter(): ConfigPhp
     {
         if(empty(self::$router)){
             self::$router = new ConfigPhp(BASE_PATH . '/common/config/router.php');

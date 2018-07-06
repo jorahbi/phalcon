@@ -11,13 +11,13 @@ class Bootstrap
     {
         //try {
 
-            Service::getService('router')->init();
-            $application = new Application(Service::getContainer());
+            Container::getService('router')->init();
+            $application = new Application(Container::getContainer());
 
             /**
              * Register application modules
              */
-            $application->registerModules(Service::getService('config')->getConfig()->modules->toArray());
+            $application->registerModules(Container::getService('config')->getConfig()->modules->toArray());
 
             //debug
             (new \Phalcon\Debug())->listen();

@@ -2,27 +2,29 @@
 
 namespace Kernel;
 
-use Phalcon\Config\Adapter\Php as ConfigPhp;
-
 class Loader
 {
+    private static $spaces = [];
+
     public static function initialize(\Phalcon\Loader $loader)
     {
-        $namespace = [];
-
-        $modules = Service::getService('config')->getConfig()->modules->toArray();
+        $modules = Container::getService('config')->getConfig()->modules->toArray();
         foreach ($modules as $key => $value) {
-            $ucfirstKey = ucfirst($key);
-            $namespace[$ucfirstKey . '\\Entity'] = APP_PATH . '/' . $key . '/entity';
-            $namespace[$ucfirstKey . '\\Models'] = APP_PATH . '/' . $key . '/models';
-            $namespace[$ucfirstKey . '\\Plugins'] = APP_PATH . '/' . $key . '/plugins';
-            $namespace[$ucfirstKey . '\\Controllers'] = APP_PATH . '/' . $key . '/controllers';
-            $namespace[$ucfirstKey . '\\Config'] = APP_PATH . '/' . $key . '/config';
+            $ucFirstKey = ucfirst($key);
+            self::$spaces[$ucFirstKey . '\\Entity'] = APP_PATH . '/' . $key . '/entity';
+            self::$spaces[$ucFirstKey . '\\Models'] = APP_PATH . '/' . $key . '/models';
+            self::$spaces[$ucFirstKey . '\\Plugins'] = APP_PATH . '/' . $key . '/plugins';
+            self::$spaces[$ucFirstKey . '\\Controllers'] = APP_PATH . '/' . $key . '/controllers';
+            self::$spaces[$ucFirstKey . '\\Config'] = APP_PATH . '/' . $key . '/config';
         }
-
-        $loader->registerNamespaces($namespace);
+        $loader->registerNamespaces(self::$spaces);
 
         $loader->register();
+    }
+
+    public static function setSpace(Array $space)
+    {
+        self::$spaces = array_merge(self::$spaces, $space);
     }
    
 }

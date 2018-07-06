@@ -4,12 +4,14 @@
     "phpoffice/phpexcel": "^1.8",
     "symfony/console": "~2.6",
     "symfony/yaml": "^2.6",
-    "doctrine/dbal": "^2.5"
+    "doctrine/orm": "^2.5",
+    "doctrine/dbal": "^2.5",
+    "phalcon/ide-stubs" : "*"
   },
   "autoload": {
     "psr-4": {
       "Kernel\\": "kernel",
-      "kernel\\Service\\": "kernel/service"
+      "Kernel\\Service\\": "kernel/service"
     }
   }
 }

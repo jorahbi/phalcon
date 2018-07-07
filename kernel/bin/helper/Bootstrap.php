@@ -51,6 +51,7 @@ class Bootstrap extends ConsoleRunner
             //new \Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand(),
             //new \Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand(),
             new Commands\SchemaCommand(),
+            new Commands\TaskCommand(),
             new Commands\ConvertMappingCommand(),
             //new \Kernel\Bin\Commands\GenerateRepositoriesCommand(),
             //new \Kernel\Bin\Commands\GenerateEntitiesCommand(),

@@ -4,41 +4,66 @@ namespace Kernel\Bin\Helper;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
-use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * 数据库命令行操作帮助类
  */
 class SchemaHelper
 {
+
+    protected static $output;
+    protected static $input;
+    /**
+     * 初始化
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    public static function init(InputInterface $input, OutputInterface $output)
+    {
+        self::$output = $output;
+        self::$input = $input;
+    }
+    protected static function getConnect()
+    {
+        return new \PDO(
+            "mysql:dbname=test;host=127.0.0.1",
+            'root',
+            'bruce'
+        );
+    }
+
     /**
      * 获取数据需要操作的数据表
      * @param String $tableName
      * @param String $moduleName
-     * @return Doctrine\DBAL\Schema\Schema
+     * @return Schema
      */
     public static function getSchema($tableName, $moduleName)
     {
-        $config = \CommandContainer::getInstance()->getService('config');
-        $dir    = $config->application->appDir . $moduleName . '/schema';
-        if(!is_dir($dir)){
-            throw new RuntimeException(sprintf('lncorrect "%s" file path.', $moduleName));
+
+        $dir = APP_PATH . '/' . $moduleName . '/schema';
+        if (!is_dir($dir)) {
+            self::$output->writeln(sprintf('  > writing <error>lncorrect "%s" file path.</error>', $moduleName));
+            die(1);
         }
-        if ($tableName) {
+        if (!empty($tableName)) {
             return self::createTableFromFile($dir . '/' . $tableName . '.yml');
         }
         return self::createSchemaFromDir($dir);
+
     }
 
     /**
      * 获取文件夹下所有需要操作的数据表
      * @param String $dir
-     * @return Doctrine\DBAL\Schema\Schema
+     * @return Schema
      */
-    public static function createSchemaFromDir($dir)
+    public static function createSchemaFromDir($dir): Schema
     {
+
         $schema = new Schema();
 
         foreach (glob($dir . '/*.yml') as $file) {
@@ -51,20 +76,20 @@ class SchemaHelper
     /**
      * 获取单个需要操作的数据表
      * @param String $dir
-     * @return Doctrine\DBAL\Schema\Schema
+     * @return Schema
      */
     public static function createTableFromFile($file, Schema $schema = null)
     {
 
-        $yml = file_get_contents($file);
         try {
+            $yml = file_get_contents($file);
             $r = Yaml::parse($yml);
-        } catch (ParseException $e) {
-            throw new \Exception(sprintf('yaml parse error at "%s": %s', basename($file), $e->getMessage()));
-        }
-
-        if (!isset($r['name']) || !isset($r['columns'])) {
-            throw new \Exception(sprintf('bad yaml file "%s": %s', basename($file), json_encode($r)));
+            if (!isset($r['name']) || !isset($r['columns'])) {
+                throw new \Exception(sprintf('bad yaml file "%s": %s', basename($file), json_encode($r)));
+            }
+        } catch (\Exception $e) {
+            self::$output->writeln(sprintf('  > writing <error>%s</error>', $e->getMessage()));
+            die(1);
         }
 
         return self::addTable($r, $schema);
@@ -73,8 +98,8 @@ class SchemaHelper
     /**
      * yml文件转换成 Doctrine\DBAL\Schema\Schema
      * @param $r
-     * @param Doctrine\DBAL\Schema\Schema $schema
-     * @return Doctrine\DBAL\Schema\Schema
+     * @param Schema $schema
+     * @return Schema
      */
     public static function addTable($r, Schema $schema = null)
     {
@@ -96,9 +121,9 @@ class SchemaHelper
         if (isset($r['indexes'])) {
             foreach ($r['indexes'] as $idx) {
                 $name = isset($idx['name']) ?
-                $idx['name'] :
-                self::getIndexName($r['name'], $idx['columns']);
-                $flags  = isset($idx['flags']) ? $idx['flags'] : [];
+                    $idx['name'] :
+                    self::getIndexName($r['name'], $idx['columns']);
+                $flags = isset($idx['flags']) ? $idx['flags'] : [];
                 $option = isset($idx['option']) ? $idx['option'] : [];
 
                 if (isset($idx['comment'])) {
@@ -135,7 +160,7 @@ class SchemaHelper
     public static function getDbalConnection($dbname)
     {
         $connection = DriverManager::getConnection([
-            'pdo'    => \CommandContainer::getInstance()->getService('commandDb'),
+            'pdo' => self::getConnect(),
             'dbname' => $dbname,
         ]);
         /**

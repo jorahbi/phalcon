@@ -2,9 +2,11 @@
 
 namespace Kernel\Bin\Helper;
 
+use Doctrine\DBAL\DBALException;
 use Kernel\Bin\Commands\SchemaCommand;
 use Doctrine\DBAL\Schema\Comparator;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * 命令行数据库基本操作
@@ -14,26 +16,35 @@ class SchemaActionHelper
     protected static $schema;
     protected static $platform;
     protected static $connection;
+    protected static $output;
 
     /**
      * 初始化
-     * @param Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    public static function init(InputInterface $input)
+    public static function init(InputInterface $input, OutputInterface $output)
     {
-        self::$connection = SchemaHelper::getDbalConnection(
-            $input->getOption(SchemaCommand::OPTION_DB)
-        );
-        self::$schema = SchemaHelper::getSchema(
-            $input->getOption(SchemaCommand::OPTION_TABLE),
-            $input->getOption(SchemaCommand::OPTION_MODULE)
-        );
-        self::$platform = self::$connection->getDatabasePlatform();
+        SchemaHelper::init($input, $output);
+        self::$output = $output;
+        try {
+            self::$connection = SchemaHelper::getDbalConnection(
+                $input->getOption(SchemaCommand::OPTION_DB)
+            );
+            self::$schema = SchemaHelper::getSchema(
+                $input->getOption(SchemaCommand::OPTION_TABLE),
+                $input->getOption(SchemaCommand::OPTION_MODULE)
+            );
+            self::$platform = self::$connection->getDatabasePlatform();
+        }catch (DBALException $e) {
+            self::$output->writeln(sprintf('  > writing <error>%s</error>', $e->getMessage()));
+            die(1);
+        }
     }
 
     /**
      * 删除操作
-     * @param Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      * @return []
      */
     public static function drop(InputInterface $input)
@@ -43,7 +54,7 @@ class SchemaActionHelper
 
     /**
      * 迁移
-     * @param Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      * @return []
      */
     public static function migrate(InputInterface $input)
@@ -55,7 +66,7 @@ class SchemaActionHelper
 
     /**
      * 创建
-     * @param Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      * @return []
      */
     public static function create(InputInterface $input)
@@ -65,16 +76,17 @@ class SchemaActionHelper
 
     /**
      * 迁移到
-     * @param Symfony\Component\Console\Input\InputInterface $input
+     * @param InputInterface $input
      * @return []
      */
-    public static function migrateFrom()
+    public static function migrateFrom(InputInterface $input)
     {
         $fromSchema = SchemaHelper::createSchemaFromDir($input->getArgument(SchemaCommand::TARGET));
         if (empty($fromSchema->getTables())) {
-            throw new \Exception('empty target schema');
+            self::$output->writeln(sprintf('  > writing <error>%s</error>', 'empty target schema'));
+            die(1);
         }
-        $schemaDiff = (new Comparator())->compare($fromSchema, $schema);
+        $schemaDiff = (new Comparator())->compare($fromSchema, self::$schema);
 
         return $schemaDiff->toSaveSql(self::$platform);
     }

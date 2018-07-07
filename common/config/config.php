@@ -7,7 +7,7 @@ return [
         'adapter' => 'Mysql',
         'host' => 'localhost',
         'username' => 'root',
-        'password' => 'root',
+        'password' => 'bruce',
         'dbname' => 'test',
         'charset' => 'utf8',
     ],

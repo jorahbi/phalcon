@@ -16,12 +16,6 @@ columns:
     option:
       default: ''
   -
-    name: path
-    type: string
-    comment: 路径
-    option:
-      notnull: true
-  -
     name: icon
     type: string
     comment: 图标

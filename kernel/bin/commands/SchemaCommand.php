@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Kernel\Container;
+use Kernel\Bin\Helper\SchemaActionHelper;
 
 class SchemaCommand extends Command
 {
@@ -24,7 +26,7 @@ class SchemaCommand extends Command
     protected function configure()
     {
         parent::configure();
-        $this->setName('schema')
+        $this->setName('orm:schema')
             ->setDescription('generate/run schema sql')
             ->addArgument(self::MODE, InputArgument::OPTIONAL, 'drop|create|migrate|migrate-from', self::MODE_MIGRATE)
             ->addArgument(self::TARGET, InputArgument::OPTIONAL, '<target>', '')
@@ -42,18 +44,18 @@ class SchemaCommand extends Command
             $action .= ucfirst(trim($value));
         }
         $action = lcfirst($action);
-
         if (!method_exists('\\Kernel\\Bin\\Helper\\SchemaActionHelper', $action)) {
-            throw new \Exception('unimplemented');
+            $output->writeln(sprintf('  > writing <error>%s</error>', 'command not found'));
+            return 1;
         }
 
-        \Kernel\Bin\Helper\SchemaActionHelper::init($input);
+        SchemaActionHelper::init($input, $output);
         $sqls = call_user_func_array('\\Kernel\\Bin\\Helper\\SchemaActionHelper::' . $action, [$input]);
 
         if (!$input->getOption(self::OPTION_EXEC)) {
             exit(implode(";\n----\n", $sqls) . PHP_EOL);
         }
-        $pdo = \CommandContainer::getInstance()->getService('commandDb');
+        $pdo = Container::getService('db');
         foreach ($sqls as $sql) {
             echo "> running sql:", PHP_EOL, $sql, PHP_EOL;
             $pdo->query($sql);

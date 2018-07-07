@@ -39,7 +39,7 @@ class ConvertMappingCommand extends CommandHelper
     {
         $this
             ->setName('orm:convert:mapping')
-            //->addArgument('mapping-type', InputArgument::OPTIONAL, 'The mapping type to export the imported mapping information to')
+            ->addArgument('modules-name', InputArgument::OPTIONAL, 'The mapping type to export the imported mapping information to')
             ->addArgument('table', InputArgument::OPTIONAL, 'The bundle to import the mapping information to')
             
             ->addOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
@@ -88,7 +88,7 @@ EOT
             $type = 'yml';
         }*/
         $type = 'yml';
-        $destPath = YML_DIRECTORY;
+        $destPath = APP_PATH . '/' . $input->getArgument('modules-name') . '/schema';
         $cme = new ClassMetadataExporter();
         $exporter = $cme->getExporter($type);
         $exporter->setOverwriteExistingFiles($input->getOption('force'));

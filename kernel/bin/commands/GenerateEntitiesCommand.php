@@ -55,7 +55,7 @@ class GenerateEntitiesCommand extends Command
                 'A string pattern used to match entities that should be processed.'
             ),
             new InputArgument(
-                'dest-path', InputArgument::OPTIONAL, 'The path to generate your entity classes.'
+                'modules-name', InputArgument::OPTIONAL, 'The path to generate your entity classes.'
             ),
             new InputOption(
                 'generate-annotations', null, InputOption::VALUE_OPTIONAL,
@@ -123,8 +123,8 @@ EOT
 
         // Process destination directory $input->getArgument('dest-path')
         //$destPath = $input->getArgument('dest-path');
-        $destPath = realpath(ENTITYS_DIRECTORY);
-        
+        //$destPath = realpath(ENTITYS_DIRECTORY);
+        $destPath = APP_PATH . '/' . $input->getArgument('modules-name') . '/entity';
         if ( ! file_exists($destPath)) {
             throw new \InvalidArgumentException(
                 sprintf("Entities destination directory '<info>%s</info>' does not exist.", $input->getArgument('dest-path'))

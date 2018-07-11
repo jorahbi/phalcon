@@ -1,4 +1,4 @@
-#!/bin/php
+#!/usr/local/php7/bin/php
 
 <?php
 
@@ -13,11 +13,10 @@ $loader->registerFiles([
 
 $loader->register();
 Kernel\Container::setContainer(new \Phalcon\Di\FactoryDefault\Cli());
-Kernel\Loader::setSpace([
+
+Kernel\Loader::initialize($loader, [
     'Kernel\\Bin\\Helper' => BASE_PATH . '/kernel/bin/helper',
     'Kernel\\Bin\\Commands' => BASE_PATH . '/kernel/bin/commands',
     'Common\\Task' => BASE_PATH . '/common/task',
 ]);
-Kernel\Loader::initialize($loader);
-
 \Kernel\Bin\Helper\Bootstrap::start();

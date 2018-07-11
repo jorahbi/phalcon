@@ -28,13 +28,14 @@ class TaskCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $console = new ConsoleApp();
-        $console->setDI(Container::getContainer());
+        $test = Container::getContainer();
+        $console->setDI($test);
         $params = [
             'task' => $input->getArgument('task'),
             'action' => $input->getArgument('action'),
+            'params' => []
         ];
         try {
-            print_r($params);
             $console->handle($params);
         } catch (\Phalcon\Exception $e) {
             print_r($e->getMessage());

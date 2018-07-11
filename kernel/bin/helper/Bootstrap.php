@@ -96,13 +96,11 @@ class Bootstrap extends ConsoleRunner
      */
     static public function run(HelperSet $helperSet, $commands = array())
     {
-        //echo chr(27) . '[41m' . "sdfsdfsd" . chr(27) . "[0m";die;
         try {
             $cli = self::createApplication($helperSet, $commands);
             $cli->run();
         }catch (\Exception $e) {
-           // $output->writeln(sprintf('  > writing <error>%s</error>', 'command not found'));
-            return 1;
+            echo chr(27) . '[41m' . $e->getMessage() . chr(27) . "[0m";
         }
     }
 

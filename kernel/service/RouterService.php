@@ -66,6 +66,7 @@ class RouterService extends Router implements ServiceInterface
 
     /**
      * 特殊的路由配置
+     * @param array $routerGroups
      */
     private function other(Array $routerGroups)
     {

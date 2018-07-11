@@ -6,8 +6,9 @@ class Loader
 {
     private static $spaces = [];
 
-    public static function initialize(\Phalcon\Loader $loader)
+    public static function initialize(\Phalcon\Loader $loader, Array $spaces = [])
     {
+        self::$spaces = array_merge(self::$spaces, $spaces);
         $modules = Container::getService('config')->getConfig()->modules->toArray();
         foreach ($modules as $key => $value) {
             $ucFirstKey = ucfirst($key);
@@ -20,11 +21,6 @@ class Loader
         $loader->registerNamespaces(self::$spaces);
 
         $loader->register();
-    }
-
-    public static function setSpace(Array $space)
-    {
-        self::$spaces = array_merge(self::$spaces, $space);
     }
    
 }

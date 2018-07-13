@@ -52,6 +52,8 @@ class Bootstrap extends ConsoleRunner
             //new \Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand(),
             new Commands\SchemaCommand(),
             new Commands\TaskCommand(),
+            new Commands\ModelCommand(),
+            new Commands\ModelAllCommand(),
             new Commands\ConvertMappingCommand(),
             //new \Kernel\Bin\Commands\GenerateRepositoriesCommand(),
             //new \Kernel\Bin\Commands\GenerateEntitiesCommand(),
@@ -100,7 +102,7 @@ class Bootstrap extends ConsoleRunner
             $cli = self::createApplication($helperSet, $commands);
             $cli->run();
         }catch (\Exception $e) {
-            echo chr(27) . '[41m' . $e->getMessage() . chr(27) . "[0m";
+            die($e->getMessage() . PHP_EOL);
         }
     }
 

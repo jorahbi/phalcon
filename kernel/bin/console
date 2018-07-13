@@ -10,6 +10,7 @@ $loader->registerFiles([
     BASE_PATH . '/kernel/Loader.php',
     BASE_PATH . '/vendor/autoload.php'
 ]);
+$loader->registerDirs([BASE_PATH. '/tasks']);
 
 $loader->register();
 Kernel\Container::setContainer(new \Phalcon\Di\FactoryDefault\Cli());

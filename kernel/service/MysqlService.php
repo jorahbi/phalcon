@@ -13,15 +13,15 @@ use Phalcon\Cache\Frontend\Data;
  */
 class MysqlService extends Mysql implements ServiceInterface
 {
-    public function __construct(ConfigService $config)
+    public function __construct(ConfigService $config, string $schema)
     {
         $config = $config->getConfig();
         $params = [
-            'host' => $config->database->host,
-            'username' => $config->database->username,
-            'password' => $config->database->password,
-            'dbname' => $config->database->dbname,
-            'charset' => $config->database->charset,
+            'host' => $config->{$schema}->host,
+            'username' => $config->{$schema}->username,
+            'password' => $config->{$schema}->password,
+            'dbname' => $config->{$schema}->dbname,
+            'charset' => $config->{$schema}->charset,
         ];
         parent::__construct($params);
     }

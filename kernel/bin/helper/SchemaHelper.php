@@ -4,9 +4,11 @@ namespace Kernel\Bin\Helper;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Console\Output\OutputInterface;
+use Kernel\Container;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * 数据库命令行操作帮助类
@@ -26,12 +28,26 @@ class SchemaHelper
         self::$output = $output;
         self::$input = $input;
     }
-    protected static function getConnect()
+
+    public static function dbConfig(string $db)
+    {
+        $config = Container::getService('config')->getConfig();
+        if (property_exists($config, $db)) {
+            return $config->{$db};
+        }
+        throw new InvalidArgumentException(sprintf('%s parameter is invalid', $db));
+    }
+
+    /**
+     * @param array $config
+     * @return \PDO
+     */
+    protected static function getConnect(Array $config)
     {
         return new \PDO(
-            "mysql:dbname=test;host=127.0.0.1",
-            'root',
-            'bruce'
+            "mysql:dbname={$config['dbname']};host={$config['host']}",
+            $config['username'],
+            $config['password']
         );
     }
 
@@ -153,15 +169,16 @@ class SchemaHelper
 
     /**
      * 获取数据连接 PDO
-     * @param $dbname
+     * @param $db
      * @return \Doctrine\DBAL\Connection
      * @throws \Doctrine\DBAL\DBALException
      */
-    public static function getDbalConnection($dbname)
+    public static function getDbalConnection(string $db)
     {
+        $dbConfig = SchemaHelper::dbConfig($db)->toArray();
         $connection = DriverManager::getConnection([
-            'pdo' => self::getConnect(),
-            'dbname' => $dbname,
+            'pdo' => self::getConnect($dbConfig),
+            'dbname' => $dbConfig['dbname'],
         ]);
         /**
          * @link http://doctrine-orm.readthedocs.org/en/latest/cookbook/mysql-enums.html

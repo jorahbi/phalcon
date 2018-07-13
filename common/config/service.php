@@ -18,6 +18,10 @@ return [
             [
                 'type' => 'service',
                 'name' => 'config',
+            ],
+            [
+                'type' => 'parameter',
+                'value' => 'database',
             ]
 
         ]
@@ -128,6 +132,9 @@ return [
     ],
     'dispatcher' => [
         'className' => 'Kernel\\Service\\DispatcherService',
+    ],
+    'utils' => [
+        'className' => 'Kernel\\Service\\UtilsService',
     ],
 ];
 

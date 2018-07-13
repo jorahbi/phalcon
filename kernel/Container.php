@@ -6,6 +6,7 @@ use Phalcon\Di\FactoryDefault;
 use Phalcon\DiInterface;
 use Phalcon\Config\Adapter\Php as ConfigPhp;
 use Phalcon\Mvc\Url as UrlResolver;
+use Phalcon\Di\FactoryDefault\Cli as CliContainer;
 
 
 final class Container
@@ -25,7 +26,7 @@ final class Container
             self::$container->setShared('config', 'Kernel\\Service\\ConfigService');
 
             $config = Container::getService('config');
-            $serviceConfig =  self::$container instanceof \Phalcon\Di\FactoryDefault\Cli ? $config->getCliService() : $config->getService();
+            $serviceConfig =  self::$container instanceof CliContainer ? $config->getCliService() : $config->getService();
             
             $config = self::getService('config')->getConfig()->modules;
             foreach ($config as $key => $value) {

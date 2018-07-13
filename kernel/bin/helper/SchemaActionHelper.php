@@ -3,8 +3,8 @@
 namespace Kernel\Bin\Helper;
 
 use Doctrine\DBAL\DBALException;
-use Kernel\Bin\Commands\SchemaCommand;
 use Doctrine\DBAL\Schema\Comparator;
+use Kernel\Bin\Commands\SchemaCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,17 +27,18 @@ class SchemaActionHelper
     {
         SchemaHelper::init($input, $output);
         self::$output = $output;
+
         try {
             self::$connection = SchemaHelper::getDbalConnection(
-                $input->getOption(SchemaCommand::OPTION_DB)
+                $input->getArgument(SchemaCommand::DB)
             );
             self::$schema = SchemaHelper::getSchema(
                 $input->getOption(SchemaCommand::OPTION_TABLE),
-                $input->getOption(SchemaCommand::OPTION_MODULE)
+                $input->getArgument(SchemaCommand::MODULE)
             );
             self::$platform = self::$connection->getDatabasePlatform();
         }catch (DBALException $e) {
-            self::$output->writeln(sprintf('  > writing <error>%s</error>', $e->getMessage()));
+            self::$output->writeln(sprintf(' <error>%s</error>', $e->getMessage()));
             die(1);
         }
     }
@@ -83,7 +84,7 @@ class SchemaActionHelper
     {
         $fromSchema = SchemaHelper::createSchemaFromDir($input->getArgument(SchemaCommand::TARGET));
         if (empty($fromSchema->getTables())) {
-            self::$output->writeln(sprintf('  > writing <error>%s</error>', 'empty target schema'));
+            self::$output->writeln(sprintf('  > <error>%s</error>', 'empty target schema'));
             die(1);
         }
         $schemaDiff = (new Comparator())->compare($fromSchema, self::$schema);

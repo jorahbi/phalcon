@@ -4,7 +4,6 @@
     "phpoffice/phpexcel": "^1.8",
     "symfony/console": "~2.6",
     "symfony/yaml": "^2.6",
-    "doctrine/orm": "^2.5",
     "doctrine/dbal": "^2.5",
     "phalcon/ide-stubs" : "*"
   },
